@@ -13,12 +13,32 @@
 <link href="${pageContext.request.contextPath}/resources/css/"
 	rel="stylesheet">
 
-<title>Elecciones | Menu</title>
+<title>Gestión Reportes JasperReports | Login</title>
 </head>
 <body>
+	<div class="container">
+		<form class="row" method="post" action="login?accion=iniciarSesion">
+			<div class="form-group">
+				<label for="exampleFormControlInput1">Usuario</label> <input
+					type="text" class="form-control" id="usuario" name="usuario">
+			</div>
+			<div class="form-group">
+				<label for="exampleInputPassword1">Clave</label> <input
+					type="password" class="form-control" id="clave" name="clave"
+					placeholder="Clave">
+			</div>
+			<div class="form-group">
+				<label for="exampleFormControlSelect1">Tipo Persona</label> <select
+					class="form-control" id="tipo_persona" name="tipo_persona">
+					<c:forEach var="r" items="${roles}" varStatus="loop">
+						<option value="${r.id}"><c:out value="${r.description}"></c:out></option>
+					</c:forEach>
+				</select>
+			</div>
+			<button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+		</form>
+	</div>
 
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/"></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script
 		src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
