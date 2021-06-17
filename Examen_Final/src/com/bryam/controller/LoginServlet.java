@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.bryam.dao.*;
 import com.bryam.entity.*;
+import com.bryam.util.Email;
 
 @WebServlet(name = "login", urlPatterns = { "/login" })
 public class LoginServlet extends HttpServlet {
@@ -91,10 +92,17 @@ public class LoginServlet extends HttpServlet {
 		String tipo = request.getParameter("tipo_persona");
 		
 		UsuarioDao dao = new UsuarioDao();
-		Usuario u = new Usuario(email, clave,(short) 1, usuario, new Rol(Integer.parseInt(tipo)));
+		Usuario u = new Usuario(email, clave,(short) 0, usuario, new Rol(Integer.parseInt(tipo)));
 		dao.insert(u);
+		enviarCorreo(email, "Validar Usuario", "<a href='http://localhost:8082/examen_final/login?accion=validarUsuario?usuario=usuario'>Validar Usuario</a>");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
+	}
+	
+	
+	public void enviarCorreo(String email, String header, String text) {
+		Email e = new Email("sofiamueblesycolchones@gmail.com", "3118938189Se");
+		e.enviarEmail(email, header, text);
 	}
 	
 }
