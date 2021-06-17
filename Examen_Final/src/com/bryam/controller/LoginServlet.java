@@ -104,7 +104,7 @@ public class LoginServlet extends HttpServlet {
 	
 	
 	public void enviarCorreo(String email, String header, String text) {
-		Email e = new Email("sofiamueblesycolchones@gmail.com", "3118938189Se");
+		Email e = new Email("bryamrodri09@gmail.com", "bryam123aA");
 		e.enviarEmail(email, header, text);
 	}
 	
