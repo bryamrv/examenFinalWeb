@@ -39,6 +39,9 @@ public class LoginServlet extends HttpServlet {
 				case "registrar":
 					register(request, response);
 					break;
+				case "validarUsuario":
+					cambiarEstdoUsuario(request, response);
+					break;
 				default:
 					break;
 				}
@@ -94,7 +97,7 @@ public class LoginServlet extends HttpServlet {
 		UsuarioDao dao = new UsuarioDao();
 		Usuario u = new Usuario(email, clave,(short) 0, usuario, new Rol(Integer.parseInt(tipo)));
 		dao.insert(u);
-		enviarCorreo(email, "Validar Usuario", "<a href='http://localhost:8082/examen_final/login?accion=validarUsuario?usuario=usuario'>Validar Usuario</a>");
+		enviarCorreo(email, "Validar Usuario", "<a href='"+request.getContextPath()+"/login?accion=validarUsuario&&usuario=usuario'>Validar Usuario</a>");
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -103,6 +106,27 @@ public class LoginServlet extends HttpServlet {
 	public void enviarCorreo(String email, String header, String text) {
 		Email e = new Email("sofiamueblesycolchones@gmail.com", "3118938189Se");
 		e.enviarEmail(email, header, text);
+	}
+	
+	public void cambiarEstdoUsuario(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		String usuario =  request.getParameter("usuario");
+		UsuarioDao dao = new UsuarioDao();
+		Usuario u =dao.findByField("usuario", usuario);
+		if(u != null) {
+			request.setAttribute("error_no_existe", false);
+			if(u.getState() == 0) {
+				u.setState((short)1);
+				dao.update(u);
+				request.setAttribute("cambio_estado", true);
+			}else {
+				request.setAttribute("cambio_estado", false);
+			}
+		}else {
+			request.setAttribute("error_no_existe", true);
+		}
+		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		dispatcher.forward(request, response);
 	}
 	
 }
